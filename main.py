@@ -1,11 +1,20 @@
 import pyttsx3
+from pypdf import PdfReader
 
-import pyttsx3
 engine = pyttsx3.init()
-
 voices = engine.getProperty('voices')       #getting details of current voice
 engine.setProperty('voice', voices[1].id)   #changing index, changes voices. 1 for female
 
-engine.say("I will speak this text")
+
+reader = PdfReader("pdf/D&D Shop Catalog, V-1.8.pdf")
+number_of_pages = len(reader.pages)
+page = reader.pages[0]
+text = page.extract_text()
+
+engine.save_to_file(text, 'output/test.mp3')
+
+print(text)
+engine.say(text)
+
 
 engine.runAndWait()
